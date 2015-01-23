@@ -1,6 +1,5 @@
 <?php namespace Maherelgamil\Cachebusting;
 
-use Illuminate\Support\Facades\File;
 
 /**
  *
@@ -12,64 +11,56 @@ class Cachebusting
 
 
     /**
-     * Get url with cache busting
+     * Get Url with version
      *
-     * @param $url
+     * @param $path
      * @return string
+     * @throws LogicException
      */
-    public function url($url)
+    function url($path)
     {
-        if($this->fileExists($url))
-        {
-            return  $this->urlGenerate($url);
+
+        if ( ! file_exists($this->getRealPath($path))) {
+            throw new LogicException("File not found at [{$this->getRealPath($path)}]");
         }
 
+        return asset($this->bustQuery($path));
     }
 
 
     /**
-     * Check if file exists
+     * get Real Path
      *
-     * @param $url
-     * @return bool
-     */
-    protected function fileExists($url)
-    {
-        return File::exists($url) ? true : false ;
-    }
-
-
-    /**
-     * get last file modified  time
-     *
-     * @param $url
-     * @return int
-     */
-    protected  function fileTime($url)
-    {
-        return fileatime($url);
-    }
-
-    /**
-     * Generate file version
-     *
-     * @param $url
+     * @param $path
      * @return string
      */
-    protected function version($url)
+    protected function getRealPath($path)
     {
-        return md5($this->fileExists($url));
+        return public_path($path);
     }
 
+
     /**
-     * Url Generator
+     * Get last file modified time and md5 it
      *
-     * @param $url
+     * @param $path
      * @return string
      */
-    protected function urlGenerate($url)
+    protected function getFileTime($path)
     {
-        return $url .'?v='.$this->version($url);
+        return md5(filemtime($this->getRealPath($path)));
+    }
+
+
+    /**
+     * Bust cache version with path
+     *
+     * @param $path
+     * @return string
+     */
+    protected function bustQuery($path)
+    {
+        return $path .'?'. $this->getFileTime($path);
     }
 
 
