@@ -1,6 +1,10 @@
 {
     "name": "maherelgamil/cachebusting",
-    "description": "",
+    "description": "Easy and useful tool to change version of file if it modified for laravel 4 .",
+    "keywords": ["assets", "cache", " busting", "laravel", "php"],
+    "homepage": "https://github.com/maherelgamil/cachebusting",
+    "license": "MIT",
+    "version": "0.0.1",
     "authors": [
         {
             "name": "maherelgamil",
@@ -12,8 +16,10 @@
         "illuminate/support": "4.2.*"
     },
     "autoload": {
+        "classmap": [
+        ],
         "psr-0": {
-            "Maherelgamil\\Cachebusting": "src/"
+            "Maherelgamil\\Cachebusting\\": "src/"
         }
     },
     "minimum-stability": "stable"
