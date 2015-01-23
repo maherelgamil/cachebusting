@@ -1,5 +1,6 @@
 <?php namespace Maherelgamil\Cachebusting;
 
+use Illuminate\Support\Facades\File;
 
 /**
  *
@@ -34,7 +35,7 @@ class Cachebusting
      */
     protected function fileExists($url)
     {
-        return fopen($url, "r") ? true : false ;
+        return File::exists($url) ? true : false ;
     }
 
 
